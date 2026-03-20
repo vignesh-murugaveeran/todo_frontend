@@ -6,11 +6,21 @@ class ApiService extends GetxService {
   final String baseUrl = 'http://10.0.2.2:3000';
   // final String baseUrl = 'http://172.16.45.11:3000';
 
-  Future login(String email, String password) async {
+  Future signUp(
+    String userName,
+    String phoneNumber,
+    String email,
+    String password,
+  ) async {
     try {
       final res = await Dio().post(
-        '$baseUrl/api/users/register',
-        data: {'email': email, 'password': password},
+        '$baseUrl/api/users/signup',
+        data: {
+          'userName': userName,
+          'phoneNumber': phoneNumber,
+          'email': email,
+          'password': password,
+        },
         options: Options(
           validateStatus: (status) => true, // prevents crash
         ),
@@ -29,6 +39,24 @@ class ApiService extends GetxService {
       // }
 
       // return {'status': false, 'message': err.message ?? 'Some Went Wrong!'};
+      throw Exception('Failed error....: $err');
+    }
+  }
+
+  Future login(String email, String password) async {
+    try {
+      final res = await Dio().post(
+        '$baseUrl/api/users/login',
+        data: {'email': email, 'password': password},
+        options: Options(
+          validateStatus: (status) => true, // prevents crash
+        ),
+      );
+      if (res.statusCode == 201) {
+        return res.data;
+      }
+      return res.data;
+    } on DioException catch (err) {
       throw Exception('Failed error....: $err');
     }
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:todo_app/authentication/controller/auth_controller.dart';
 import 'package:todo_app/authentication/loginScreen.dart';
 import 'package:todo_app/local_storage/local_storage.dart';
 
@@ -11,8 +12,17 @@ class Homescreen extends StatefulWidget {
 }
 
 class _HomescreenState extends State<Homescreen> {
-  String getEmailString() {
-    return LocalStorage.sharedPreferences?.getString('email') ?? 'no email Id';
+  final AuthController _authController = Get.find<AuthController>();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadEmail();
+  }
+
+  void loadEmail() {
+    _authController.userEmail.value =
+        LocalStorage.sharedPreferences?.getString('email') ?? '';
   }
 
   @override
@@ -23,7 +33,11 @@ class _HomescreenState extends State<Homescreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Hello ${getEmailString()}'),
+              Obx(
+                () => Text(
+                  'Hello ${_authController.userEmail.value.isEmpty ? 'No Email Id' : _authController.userEmail.value}',
+                ),
+              ),
               const SizedBox(height: 20),
               ElevatedButton.icon(
                 onPressed: () {
