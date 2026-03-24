@@ -93,10 +93,11 @@ class AuthController extends GetxController {
 
       if (res['status'] == true) {
         final userEmail = res['data']['user']['email'];
-        LocalStorage.sharedPreferences?.setString(
-          'email',
-          res['data']['user']['email'],
-        );
+        LocalStorage.sharedPreferences?.setString('email', userEmail);
+        // LocalStorage.sharedPreferences?.setString(
+        //   'email',
+        //   userEmail,
+        // );
         // Update reactive variable
         this.userEmail.value = userEmail;
         LocalStorage.sharedPreferences?.setString(

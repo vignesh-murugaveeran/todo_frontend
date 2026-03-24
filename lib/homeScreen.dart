@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:todo_app/authentication/controller/auth_controller.dart';
 import 'package:todo_app/authentication/loginScreen.dart';
 import 'package:todo_app/local_storage/local_storage.dart';
+import 'package:todo_app/poppups/poppups.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -41,7 +42,18 @@ class _HomescreenState extends State<Homescreen> {
               const SizedBox(height: 20),
               ElevatedButton.icon(
                 onPressed: () {
-                  Get.offAll(() => LoginScreen());
+                  // Get.offAll(() => LoginScreen());
+                  showCallAlertDialog(
+                    context,
+                    'Logout!',
+                    'Are you sure want to logout?',
+                    () async {
+                      // await DioApi().logout();
+                      await LocalStorage.sharedPreferences?.clear();
+                      await Get.offAll(LoginScreen());
+                    },
+                    Colors.red,
+                  );
                 },
                 label: const Text('Logout'),
                 icon: Icon(Icons.logout),

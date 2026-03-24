@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:todo_app/authentication/loginScreen.dart';
+import 'package:todo_app/homeScreen.dart';
 import 'package:todo_app/local_storage/local_storage.dart';
+import 'package:todo_app/routes/app_routes.dart';
 
 class SplashController extends GetxController {
   final a = 10.obs;
@@ -10,12 +12,15 @@ class SplashController extends GetxController {
     super.onInit();
 
     Future.delayed(Duration(seconds: 2), () {
-      String token = LocalStorage.sharedPreferences?.getString("token") ?? "";
+      String token =
+          LocalStorage.sharedPreferences?.getString("accesToken") ?? "";
       print(token);
       if (token == null || token == "") {
-        Get.offAll(LoginScreen());
+        // Get.offAll(LoginScreen());
+        Get.offAllNamed(Routes.login);
       } else {
-        // Get.off(BottomNavigationBarPage());
+        // Get.off(Homescreen());
+        Get.offAllNamed(Routes.home);
       }
       // Get.off(
       // () => const BottomNavigationBarPage(),

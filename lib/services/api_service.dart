@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:todo_app/authentication/dio_util.dart';
 
 class ApiService extends GetxService {
   // final String baseUrl = 'http://localhost:3000';
@@ -13,7 +14,7 @@ class ApiService extends GetxService {
     String password,
   ) async {
     try {
-      final res = await Dio().post(
+      final res = await DioUtil.dio.post(
         '$baseUrl/api/users/signup',
         data: {
           'userName': userName,
