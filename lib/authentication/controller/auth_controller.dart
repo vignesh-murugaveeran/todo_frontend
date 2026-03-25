@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:todo_app/constansts/enums.dart';
 import 'package:todo_app/homeScreen.dart';
 import 'package:todo_app/local_storage/local_storage.dart';
 import 'package:todo_app/services/api_service.dart';
@@ -11,6 +12,24 @@ class AuthController extends GetxController {
   RxBool showPass = true.obs;
 
   RxString userEmail = ''.obs;
+
+  Rx<PageState> isLoading = PageState.loading.obs;
+
+  Future<void> getProfile() async {
+    try {
+      isLoading.value = PageState.loading;
+
+      final res = await ApiService.getProfile();
+
+      print("PROFILE DATA: $res");
+
+      userEmail.value = res['user']['email'];
+    } catch (e) {
+      print("Profile Error: $e");
+    } finally {
+      isLoading.value = PageState.error;
+    }
+  }
 
   Future signUp(
     context,
@@ -101,8 +120,12 @@ class AuthController extends GetxController {
         // Update reactive variable
         this.userEmail.value = userEmail;
         LocalStorage.sharedPreferences?.setString(
-          'accesToken',
+          'accessToken',
           res['data']['accessToken'],
+        );
+        LocalStorage.sharedPreferences?.setString(
+          'refreshToken',
+          res['data']['refreshToken'],
         );
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

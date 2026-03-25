@@ -19,6 +19,7 @@ class _HomescreenState extends State<Homescreen> {
     // TODO: implement initState
     super.initState();
     loadEmail();
+    _authController.getProfile();
   }
 
   void loadEmail() {

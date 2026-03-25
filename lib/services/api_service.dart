@@ -1,11 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:todo_app/authentication/dio_util.dart';
+import 'package:todo_app/constansts/baseUrl.dart';
 
 class ApiService extends GetxService {
-  // final String baseUrl = 'http://localhost:3000';
-  final String baseUrl = 'http://10.0.2.2:3000';
-  // final String baseUrl = 'http://172.16.45.11:3000';
+  static Future<dynamic> getProfile() async {
+    final response = await DioUtil.dio.get('$baseUrl/profile');
+
+    return response.data;
+  }
 
   Future signUp(
     String userName,
@@ -15,7 +18,7 @@ class ApiService extends GetxService {
   ) async {
     try {
       final res = await DioUtil.dio.post(
-        '$baseUrl/api/users/signup',
+        '$baseUrl/signup',
         data: {
           'userName': userName,
           'phoneNumber': phoneNumber,
@@ -47,7 +50,7 @@ class ApiService extends GetxService {
   Future login(String email, String password) async {
     try {
       final res = await Dio().post(
-        '$baseUrl/api/users/login',
+        '$baseUrl/login',
         data: {'email': email, 'password': password},
         options: Options(
           validateStatus: (status) => true, // prevents crash

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:todo_app/authentication/loginScreen.dart';
 import 'package:todo_app/homeScreen.dart';
 import 'package:todo_app/local_storage/local_storage.dart';
@@ -13,19 +14,27 @@ class SplashController extends GetxController {
 
     Future.delayed(Duration(seconds: 2), () {
       String token =
-          LocalStorage.sharedPreferences?.getString("accesToken") ?? "";
+          LocalStorage.sharedPreferences?.getString("accessToken") ?? "";
       print(token);
-      if (token == null || token == "") {
+      if (token.isEmpty) {
         // Get.offAll(LoginScreen());
         Get.offAllNamed(Routes.login);
-      } else {
+        return;
+      }
+      ///WITHOUT REFRESH TOKEN
+      else {
         // Get.off(Homescreen());
         Get.offAllNamed(Routes.home);
       }
-      // Get.off(
-      // () => const BottomNavigationBarPage(),
-      //() => const LoginPage(),
-      // ); // Replaces the splash with MainPage
+
+      ///WITH REFRESH TOKEN
+      // bool isExpired = JwtDecoder.isExpired(token);
+
+      // if (isExpired) {
+      //   Get.offAllNamed(Routes.login);
+      // } else {
+      //   Get.offAllNamed(Routes.home);
+      // }
     });
   }
 }
