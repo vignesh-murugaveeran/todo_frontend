@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_app/authentication/controller/auth_controller.dart';
 import 'package:todo_app/authentication/loginScreen.dart';
+import 'package:todo_app/bottom_nav_bar1.dart';
+import 'package:todo_app/bottom_nav_bar2.dart';
 import 'package:todo_app/local_storage/local_storage.dart';
 import 'package:todo_app/poppups/poppups.dart';
+import 'package:todo_app/routes/app_routes.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -51,13 +54,29 @@ class _HomescreenState extends State<Homescreen> {
                     () async {
                       // await DioApi().logout();
                       await LocalStorage.sharedPreferences?.clear();
-                      await Get.offAll(LoginScreen());
+                      await Get.offAllNamed(Routes.login);
                     },
                     Colors.red,
                   );
                 },
                 label: const Text('Logout'),
                 icon: Icon(Icons.logout),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                onPressed: () {
+                  Get.to(() => DemoApp());
+                },
+                label: const Text('Go-1'),
+                icon: Icon(Icons.arrow_forward),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                onPressed: () {
+                  Get.to(() => RmsApp());
+                },
+                label: const Text('Go-2'),
+                icon: Icon(Icons.arrow_forward),
               ),
             ],
           ),
